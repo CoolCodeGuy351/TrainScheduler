@@ -7,11 +7,10 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
-<!-- Google Font -->
-
-<!-- Font Awesome Glyps -->
-<script src="https://use.fontawesome.com/a5863cd1b3.js"></script>
+<!-- FireBase -->
+<script src="https://www.gstatic.com/firebasejs/3.9.0/firebase.js"></script>
+<!-- Moment JS -->
+<script src="assets/js/moment.js"></script>
 <!-- Boostrap -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 <link rel="stylesheet" type="text/css" href="assets/css/style.css">
@@ -40,25 +39,16 @@
 	</div>
 	<!-- Train schedule main section -->
 	<div class="row text-center">
-		<div class="col-3">
-			<h5>Train Name</h5>
-			<p></p>
-		</div>
-  		<div class="col-3">
-  			<h5>Desitnation</h5>
- 			<p></p>
-		</div>
-  		<div class="col-2">
-  			<h5>Frequency</h5>
-  			<p></p>
-		</div>
-  		<div class="col-2">
-  			<h5>Next Arrival</h5>
-  			<p></p>
-		</div>
-  		<div class="col-2">
-  		<h5>Minutes Away</h5>
-  			<p></p>
+		<div class="col">
+            <table class="table table-striped">
+                <tr>
+                    <td class="">Train Name</td>
+                    <td class="">Destination</td>
+                    <td class="">Frequency</td>
+                    <td class="">Next Arrival</td>
+                    <td class="">Minutes Away</td>
+                </tr>
+            </table>
 		</div>
 	</div>
 	<!-- Train Input Section -->
@@ -73,15 +63,15 @@
 			<form>
 			  <div class="form-group text-left">
 			    <label for="exampleInputEmail1"><span class="form-text">Train Name</span></label>
-			    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter the name of the train here">
+			    <input type="text" class="form-control" id="train-name-input" aria-describedby="emailHelp" placeholder="Enter the name of the train here">
 			    <label for="exampleInputEmail1"><span class="form-text">Destination</span></label>
-			    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter your desitnation here">
+			    <input type="text" class="form-control" id="destination-input" aria-describedby="emailHelp" placeholder="Enter your desitnation here">
 			    <label for="exampleInputEmail1"><span class="form-text">First Train Time (HH:mm - military time)</span></label>
-			    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="First train time">
+			    <input type="text" class="form-control" id="train-time-input" aria-describedby="emailHelp" placeholder="First train time">
 			    <label for="exampleInputEmail1"><span class="form-text">Frequency(min)</span></label>
-			    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Frequency">
+			    <input type="text" class="form-control" id="frequency-input" aria-describedby="emailHelp" placeholder="Frequency">
 			  </div>
-			  <button type="submit" class="btn btn-default btn-lg">Submit</button>
+			  <button id="submit" type="submit" class="btn btn-default btn-lg">Submit</button>
 			</form>
 		</div>
 
