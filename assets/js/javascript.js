@@ -1,4 +1,6 @@
 /* JS / JQuery / moment.js / bootstrap 4 (js) */
+$( document ).ready(function() {
+
 
 var config = {
     apiKey: "AIzaSyBmavVwcD7GTlVcPkO1t6RzRPSLF9MGyFk",
@@ -13,77 +15,69 @@ var config = {
 
     var i=0;
 
-
-
     var database = firebase.database();
 
     $('#submit').on('click', function() {
         event.preventDefault()
         var name = $('#train-name-input').val().trim();
         var destination = $('#destination-input').val().trim();
-        var next = $('#train-time-input').val().trim();
+        var first = $('#train-time-input').val().trim();
         var frequency = $('#frequency-input').val().trim();
 
-        var currentTime = moment().format("MM-DD-YYYY/HH:mm");
-        var currentMinusYear = moment().subtract(1, "year").format("MM-DD-YYYY/HH:mm");
+        // Below code figures out Next train arrival and time till next train. 
 
-        next = parseInt(next);
+        var firstTimeConverted = moment(first, "hh:mm").subtract(1, "years");
+        console.log("firstTimeConverted: " + firstTimeConverted);
 
-        var difference = moment(currentMinusYear,"DD/MM/YYYY HH:mm:ss").diff(moment(next,"DD/MM/YYYY HH:mm")).format("mm")
-   
-        console.log("difference in min: " + difference);
+        // Current Time
+        var currentTime = moment();
+        console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
+
+        // Difference between the times
+        var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+        console.log("DIFFERENCE IN TIME: " + diffTime);
+
+        // Time apart (remainder)
+        var tRemainder = diffTime % frequency;
+        console.log("tRemainder: " + tRemainder);
+
+        // Minute Until Train
+        var tMinutesTillTrain = frequency - tRemainder;
+        console.log("MINUTES TILL TRAIN(tMinutesTillTrain): " + tMinutesTillTrain);
+
+        // Next Train
+        var nextTrain = moment().add(tMinutesTillTrain, "minutes");
+        console.log("ARRIVAL TIME(nextTrain): " + moment(nextTrain).format("hh:mm"));
+
+        nextTrain = moment(nextTrain).format("hh:mm");
 
 
-
-        //var duration = moment.duration(end.diff(startTime));
-        //var hours = duration.asHours();
-
-
-        console.log("Current time: " + currentTime);
-        console.log("Current time minus a year: " + currentMinusYear);
-
-
-
-        ///////////////////////////////////////////////////////////////////
-        /*
-        var startdate = moment();
-        startdate = startdate.subtract(1, "days");
-        startdate = startdate.format("DD-MM-YYYY");
-        However, you can chain this together; this would look like:
-
-        var startdate = moment().subtract(1, "days").format("DD-MM-YYYY");
-        */
-        ///////////////////////////////////////////////////////////////////
-
-        
-        //moment().toNow();
-        ///////////////////////////////////////////////////////////////////
         $('#train-name-input').val("");
         $('#destination-input').val("");
         $('#train-time-input').val("");
         $('#frequency-input').val("");
 
         database.ref().push({
-            name,
-            destination,
-            next,
-            frequency,
-            /*minAway,*/
-
+            name : name,
+            destination: destination,
+            nextTrain: nextTrain,
+            frequency: frequency,
+            tMinutesTillTrain: tMinutesTillTrain
         })
 
     })
 
     database.ref().on('child_added', function(snapshot) {
 
-        console.log(snapshot.val())
-
         var a = $('<tr id='+i+'>');
         a.append("<td>" + snapshot.val().name + "</td>");
         a.append("<td>" + snapshot.val().destination + "</td>");
         a.append("<td>" + snapshot.val().frequency + "</td>");
-        a.append("<td>" + snapshot.val().next + "</td>");
-        /*a.append("<td>" + snapshot.val().minAway + "</td>");*/
+        a.append("<td>" + snapshot.val().nextTrain + "</td>");
+        a.append("<td>" + snapshot.val().tMinutesTillTrain + "</td>");
         $('.table').append(a)
         i++;
     });
+
+
+});
