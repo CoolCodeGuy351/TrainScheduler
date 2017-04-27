@@ -26,12 +26,12 @@ var config = {
 
         // Below code figures out Next train arrival and time till next train. 
 
-        var firstTimeConverted = moment(first, "hh:mm").subtract(1, "years");
+        var firstTimeConverted = moment(first, "hh:mm:ss").subtract(1, "years");
         console.log("firstTimeConverted: " + firstTimeConverted);
 
         // Current Time
         var currentTime = moment();
-        console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
+        console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm:ss"));
 
         // Difference between the times
         var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
@@ -47,15 +47,18 @@ var config = {
 
         // Next Train
         var nextTrain = moment().add(tMinutesTillTrain, "minutes");
-        console.log("ARRIVAL TIME(nextTrain): " + moment(nextTrain).format("hh:mm A"));
+        console.log("ARRIVAL TIME(nextTrain): " + moment(nextTrain).format("hh:mm:ss A"));
 
         nextTrain = moment(nextTrain).format("hh:mm A");
 
+
+        /* reset text input fields back to blank after submit */
 
         $('#train-name-input').val("");
         $('#destination-input').val("");
         $('#train-time-input').val("");
         $('#frequency-input').val("");
+
 
         database.ref().push({
             name : name,
@@ -65,19 +68,33 @@ var config = {
             tMinutesTillTrain: tMinutesTillTrain
         })
 
-    })
+    });
 
-    database.ref().on('child_added', function(snapshot) {
+    /* setInterval(function(){ code here }, 60000) 
+        method can be used here..
+        need to update each rows times individually */
 
-        var a = $('<tr id='+i+'>');
+    /* appends snapshot of database to html as table row / table data */
+    database.ref().on('child_added', function(snapshot/*,getkey*/) {
+
+        var a = $('<tr>').addClass('x');
         a.append("<td>" + snapshot.val().name + "</td>");
         a.append("<td>" + snapshot.val().destination + "</td>");
         a.append("<td>" + snapshot.val().frequency + "</td>");
         a.append("<td>" + snapshot.val().nextTrain + "</td>");
-        a.append("<td>" + snapshot.val().tMinutesTillTrain + "</td>");
+        a.append("<td>" + snapshot.val().tMinutesTillTrain + "</td>").addClass('countdown-' + i);
         $('.table').append(a)
         i++;
-    });
+
+     }); /* database.ref() end firebase function
 
 
-});
+    /* Removes selected table rows*/
+    $(document).on("click", ".x", remove);
+
+    function remove(){
+        $(this).remove();
+    }
+
+
+}); /* Document on ready function end */
