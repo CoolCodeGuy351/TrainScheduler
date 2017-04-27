@@ -47,9 +47,9 @@ var config = {
 
         // Next Train
         var nextTrain = moment().add(tMinutesTillTrain, "minutes");
-        console.log("ARRIVAL TIME(nextTrain): " + moment(nextTrain).format("hh:mm"));
+        console.log("ARRIVAL TIME(nextTrain): " + moment(nextTrain).format("hh:mm A"));
 
-        nextTrain = moment(nextTrain).format("hh:mm");
+        nextTrain = moment(nextTrain).format("hh:mm A");
 
 
         $('#train-name-input').val("");
