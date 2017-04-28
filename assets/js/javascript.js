@@ -88,6 +88,7 @@ var config = {
 
      }); /* database.ref() end firebase function
 
+    setInterval(function(){ code here }, 60000)
 
     /* Removes selected table rows*/
     $(document).on("click", ".x", remove);
